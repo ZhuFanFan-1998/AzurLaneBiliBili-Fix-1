@@ -39,17 +39,17 @@ echo "apk downloaded !"
 
 # Download JMBQ
 if [ ! -d "azurlane" ]; then
-    echo "download JMBQ"
-    git clone https://github.com/feathers-l/azurlane
+    echo "download perseus"
+    git clone https://github.com/Egoistically/Perseus
 fi
 
 echo "Decompile Azur Lane apk"
 java -jar apktool.jar d -f com.bilibili.AzurLane.apk
 
-echo "Copy JMBQ libs"
+echo "Copy Perseus libs"
 cp -r azurlane/. com.bilibili.AzurLane/lib/
 
-echo "Patching Azur Lane with JMBQ"
+echo "Patching Azur Lane with Perseus"
 oncreate=$(grep -n -m 1 'onCreate'  com.bilibili.AzurLane/smali_classes3/com/unity3d/player/UnityPlayerActivity.smali | sed  's/[0-9]*\:\(.*\)/\1/')
 sed -ir "N; s#\($oncreate\n    .locals 2\)#\1\n    const-string v0, \"JMBQ\"\n\n    invoke-static {v0}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V\n#" com.bilibili.AzurLane/smali_classes3/com/unity3d/player/UnityPlayerActivity.smali
 
